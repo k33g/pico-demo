@@ -88,7 +88,7 @@ class Client {
       host: serviceurl.hostname,
       port: serviceurl.port,
       method: "GET",
-      path: `/healthcheck`,
+      path: `/healthcheck` + service.registration ? `/${service.registration}` : ``,
       headers:  {"Content-Type": "application/json; charset=utf-8"}
     }).then(data => {
       return JSON.parse(data)
@@ -228,6 +228,10 @@ class Service {
       method: "GET",
       f: (request, response) => {
         if(record) {
+          let p = request.params[0]
+          if(this.record.registration!==p) {
+            this.record.status = "DOWN"
+          }
           response.sendJson({
             status: this.record.status, 
             registration: this.record.registration
@@ -240,7 +244,6 @@ class Service {
     })
 
     function bye(service, cause) {
-      console.log("🤖 ❤️ 😻", cause)
       if(service.discoveryBackend) {
         service.removeRegistration(res => {
           service.stop(cause)
@@ -256,22 +259,8 @@ class Service {
       process.on('exit', bye.bind(null, this, 'exit'));
       //catches ctrl+c event
       process.on('SIGINT', bye.bind(null, this, 'SIGINT'));
-
-      //process.on('SIGKILL', bye.bind(null, this, 'SIGKILL'));
-      //process.on('SIGSTOP', bye.bind(null, this, 'SIGSTOP'));
-      //process.on('SIGBUS', bye.bind(null, this, 'SIGBUS'));
-      //process.on('SIGFPE', bye.bind(null, this, 'SIGFPE'));
-      //process.on('SIGSEGV', bye.bind(null, this, 'SIGSEGV'));
-      //process.on('SIGILL', bye.bind(null, this, 'SIGILL'));
-
-      //process.on('SIGTERM', bye.bind(null, this, 'SIGTERM'));
-      process.on('beforeExit', bye.bind(null, this, 'beforeExit'));
-      //process.on('disconnect', bye.bind(null, this, 'disconnect'));
-
-
       //catches uncaught exceptions
       process.on('uncaughtException', bye.bind(null, this, 'uncaughtException'));
-      
     }
   }
 
