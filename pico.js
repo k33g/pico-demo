@@ -240,6 +240,7 @@ class Service {
     })
 
     function bye(service, cause) {
+      console.log("🤖 ❤️ 😻")
       if(service.discoveryBackend) {
         service.removeRegistration(res => {
           service.stop(cause)
@@ -255,8 +256,14 @@ class Service {
       process.on('exit', bye.bind(null, this, 'exit'));
       //catches ctrl+c event
       process.on('SIGINT', bye.bind(null, this, 'SIGINT'));
+
+      process.on('beforeExit', bye.bind(null, this, 'beforeExit'));
+      process.on('disconnect', bye.bind(null, this, 'disconnect'));
+
+
       //catches uncaught exceptions
       process.on('uncaughtException', bye.bind(null, this, 'uncaughtException'));
+      
     }
   }
 
