@@ -85,7 +85,7 @@ class Client {
 
     var path = this.service.registration !== undefined ? `/healthcheck/` + this.service.registration : `/healthcheck`
     
-    console.log("😈", path)
+    //console.log("😈", path)
 
     return fetch({
       protocol: serviceurl.protocol.slice(0, -1), // remove ":"
