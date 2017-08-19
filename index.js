@@ -80,7 +80,6 @@ calcService.start({port: port}, res => {
           Success: data => {
             console.log("😁 DiscoveryBackend is", data)
             /* === publishing picoservice === */
-            calcService.record.status = "UP"      
             
             calcService.createRegistration(registration => {
               registration.when({

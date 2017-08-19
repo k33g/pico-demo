@@ -83,7 +83,7 @@ class Client {
     
     let serviceurl = url.parse(this.service.domain)
 
-    var path = this.service.registration !== undefined ? `/healthcheck` + this.service.registration : `/healthcheck`
+    var path = this.service.registration !== undefined ? `/healthcheck/` + this.service.registration : `/healthcheck`
     
     console.log("😈", path)
 
