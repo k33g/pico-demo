@@ -240,7 +240,7 @@ class Service {
     })
 
     function bye(service, cause) {
-      console.log("🤖 ❤️ 😻")
+      console.log("🤖 ❤️ 😻", cause)
       if(service.discoveryBackend) {
         service.removeRegistration(res => {
           service.stop(cause)
