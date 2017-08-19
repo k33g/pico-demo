@@ -64,40 +64,48 @@ calcService.post({uri:`/api/add`, f: (request, response) => {
   response.sendJson({message: "Hey 👋", from:"pico" , result: data.a + data.b})
 }})
 
-discoveryBackend.healthcheck(results => {
-  results.when({
-    Failure: error => console.log("😡 Houston? We have a problem!", error),
-    Success: data => {
-      console.log("😁 DiscoveryBackend is", data)
-      /* === publishing picoservice === */
-      calcService.createRegistration(registration => {
-        registration.when({
-          Failure: (err) => console.log("🙀", err),
-          Success: record => {
-            console.log("😻 registration is ok:", record)
-            /* === starting picoservice === */
-            calcService.start({port: port}, res => {
-              res.when({
-                Failure: error => console.log("😡 Houston? We have a problem!"),
-                Success: port => {
-                  /* === updating picoservice === */
-                  calcService.record.status = "UP"      
-                  calcService.updateRegistration(registration => {
-                    registration.when({
-                      Failure: error => console.log("😡 update registration is ko", error),
-                      Success: value => console.log("😍 registration updated", value)
-                    })
-                  })
-                  console.log(`🌍 calcService is listening on ${port}`)
-                }
-              })
-            }) // end of start
+/* === starting picoservice === */
+calcService.start({port: port}, res => {
+  res.when({
+    Failure: error => console.log("😡 Houston? We have a problem!"),
+    Success: port => {
+
+      console.log(`🌍 calcService is listening on ${port}`)
+
+      discoveryBackend.healthcheck(results => {
+        results.when({
+          Failure: error => console.log("😡 Houston? We have a problem!", error),
+          Success: data => {
+            console.log("😁 DiscoveryBackend is", data)
+            /* === publishing picoservice === */
+            calcService.record.status = "UP"      
+            
+            calcService.createRegistration(registration => {
+              registration.when({
+                Failure: (err) => console.log("🙀", err),
+                Success: record => console.log("😻 registration is ok:", record)
+              }) // end of when
+            }) // end of create registration
           } // end of success
         }) // end of when
-      }) // end of create registration
+      }) // end of healthcheck
     } // end of success
   }) // end of when
-}) // end of healthcheck
+}) // end of start
+
+ /* === updating picoservice === */
+
+/*
+calcService.record.status = "UP"      
+calcService.updateRegistration(registration => {
+  registration.when({
+    Failure: error => console.log("😡 update registration is ko", error),
+    Success: value => console.log("😍 registration updated", value)
+  })
+})
+*/
+
+
 
 
 
