@@ -20,3 +20,7 @@ DISCOVERY_PROTOCOL=http
 SERVICE_DOMAIN=http://pico.calc.cleverapps.io
 PORT=8080
 ```
+
+## TODO:
+
+- add the date-time of publication or something else, it`s useful when blue-green deployment to choose the good (the last) picoservice | or do that on the backend side
