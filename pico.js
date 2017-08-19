@@ -257,6 +257,7 @@ class Service {
       //catches ctrl+c event
       process.on('SIGINT', bye.bind(null, this, 'SIGINT'));
 
+      process.on('SIGTERM', bye.bind(null, this, 'SIGTERM'));
       process.on('beforeExit', bye.bind(null, this, 'beforeExit'));
       process.on('disconnect', bye.bind(null, this, 'disconnect'));
 
