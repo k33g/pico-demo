@@ -48,7 +48,7 @@ calcService.stop = (cause) => {
 }
 
 /**
- * usage: curl http://pico.demo.cleverapps.io/api/add/40/2
+ * usage: curl http://pico.calc.cleverapps.io/api/add/40/2
  */
 calcService.get({uri:`/api/add`, f: (request, response) => {
   let a = parseInt(request.params[0])
@@ -57,7 +57,7 @@ calcService.get({uri:`/api/add`, f: (request, response) => {
 }})
 
 /**
- * usage:  curl -H "Content-Type: application/json" -X POST -d '{"a":21,"b":21}' http://pico.demo.cleverapps.io/api/add
+ * usage: curl -H "Content-Type: application/json" -X POST -d '{"a":21,"b":21}' http://pico.calc.cleverapps.io/api/add
  */
 calcService.post({uri:`/api/add`, f: (request, response) => {
   let data = request.body
