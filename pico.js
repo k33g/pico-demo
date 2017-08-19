@@ -260,9 +260,9 @@ class Service {
       //process.on('SIGKILL', bye.bind(null, this, 'SIGKILL'));
       //process.on('SIGSTOP', bye.bind(null, this, 'SIGSTOP'));
       process.on('SIGBUS', bye.bind(null, this, 'SIGBUS'));
-      //process.on('SIGFPE', bye.bind(null, this, 'SIGFPE'));
-      //process.on('SIGSEGV', bye.bind(null, this, 'SIGSEGV'));
-      //process.on('SIGILL', bye.bind(null, this, 'SIGILL'));
+      process.on('SIGFPE', bye.bind(null, this, 'SIGFPE'));
+      process.on('SIGSEGV', bye.bind(null, this, 'SIGSEGV'));
+      process.on('SIGILL', bye.bind(null, this, 'SIGILL'));
 
       process.on('SIGTERM', bye.bind(null, this, 'SIGTERM'));
       process.on('beforeExit', bye.bind(null, this, 'beforeExit'));
