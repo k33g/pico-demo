@@ -88,7 +88,7 @@ class Client {
       host: serviceurl.hostname,
       port: serviceurl.port,
       method: "GET",
-      path: `/healthcheck` + service.registration ? `/${service.registration}` : ``,
+      path: `/healthcheck` + this.service.registration ? `/${this.service.registration}` : ``,
       headers:  {"Content-Type": "application/json; charset=utf-8"}
     }).then(data => {
       return JSON.parse(data)
