@@ -235,6 +235,8 @@ class Service {
           let p = request.params[0]
           if(this.record.registration!==p) {
             this.record.status = "DOWN"
+          } else {
+            this.record.status = "UP"
           }
           response.sendJson({
             status: this.record.status, 
