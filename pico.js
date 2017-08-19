@@ -80,15 +80,19 @@ class Client {
   }
 
   healthCheck() {
-
+    
     let serviceurl = url.parse(this.service.domain)
+
+    var path = this.service.registration !== undefined ? `/healthcheck` + this.service.registration : `/healthcheck`
+    
+    console.log("😈", path)
 
     return fetch({
       protocol: serviceurl.protocol.slice(0, -1), // remove ":"
       host: serviceurl.hostname,
       port: serviceurl.port,
       method: "GET",
-      path: `/healthcheck` + this.service.registration ? `/${this.service.registration}` : ``,
+      path: path,
       headers:  {"Content-Type": "application/json; charset=utf-8"}
     }).then(data => {
       return JSON.parse(data)
