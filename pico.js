@@ -220,7 +220,7 @@ class Service {
       //catches ctrl+c event
       process.on('SIGINT', bye.bind(null, this, 'SIGINT'));
 
-      process.on('SIGSTOP', bye.bind(null, this, '🛑 ✋🏾 SIGSTOP'));
+      //process.on('SIGSTOP', bye.bind(null, this, '🛑 ✋🏾 SIGSTOP'));
             
 
 
