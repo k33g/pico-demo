@@ -36,7 +36,8 @@ let record = {
     {name: "add2", type: "POST", path: "/add"}],
   metadata: {
     kind: "http"
-  }
+  },
+  instance: { id: process.env.INSTANCE_ID, type: process.env.INSTANCE_TYPE, number: process.env.INSTANCE_NUMBER }
 }
 
 let calcService = new Service({discoveryBackend: discoveryBackend, record: record})
