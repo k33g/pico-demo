@@ -91,20 +91,14 @@ calcService.start({port: port}, res => {
                 Failure: (err) => console.log("🙀", err),
                 Success: record => { 
                   console.log("😻 registration is ok:", record) 
-                  
+                                                    
                   // heartbeat
-                  function updateStatusOfService(service) {
-                    return function() {
-                      service.updateRegistration(registration => {
-                        registration.when({
-                          Failure: error => console.log("😡 update registration is ko", error),
-                          Success: value => console.log("😍 registration updated", value)
-                        })
-                      })
-                    }
-                  } // end function updateStatusOfService()
-                  setInterval(updateStatusOfService(calcService), 5000);                  
-                  
+                  calcService.heartbeat({interval: 5000, f: res => {
+                    res.when({ // if error -> the backend server is probably down
+                      Failure: error => console.log("😡 update registration is ko", error),
+                      Success: serviceRecord => console.log("😍 registration updated", serviceRecord)
+                    })
+                  }})                                  
                 
                 } // end of Success
               }) // end of when
