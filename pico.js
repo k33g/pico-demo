@@ -219,18 +219,18 @@ class Service {
       process.on('exit', bye.bind(null, this, 'exit'));
       //catches ctrl+c event
       process.on('SIGINT', bye.bind(null, this, 'SIGINT'));
-
-      //process.on('SIGSTOP', bye.bind(null, this, '🛑 ✋🏾 SIGSTOP'));
-            
-
-
       //catches uncaught exceptions
       process.on('uncaughtException', bye.bind(null, this, 'uncaughtException'));
     }
   }
 
   createRegistration(callBack) {
-    this.record.date = new Date()
+    this.record.date = {}
+    this.record.date.creation = new Date()
+    this.record.date.previousUpdate = new Date()
+    this.record.date.lastUpdate = new Date()
+    this.record.date.age = 0
+    
     this.discoveryBackend.createRegistration(this.record, registrationResult => {
       registrationResult.when({
         Success: registrationId => callBack(Success.of({message: "😃 registration is ok", record: this.record})),
@@ -240,7 +240,10 @@ class Service {
   } // end register
 
   updateRegistration(callBack) {
-    this.record.date = new Date()    
+    this.record.date.previousUpdate = this.record.date.lastUpdate
+    this.record.date.lastUpdate = new Date()        
+    this.record.date.age = (this.record.date.lastUpdate.getTime() - this.record.date.previousUpdate.getTime()) / 1000
+
     this.discoveryBackend.updateRegistration(this.record, registrationResult => {
       registrationResult.when({
         Success: registrationId => callBack(Success.of({message: "😃 registration is updated", record: this.record})),
@@ -341,7 +344,7 @@ class DiscoveryBackendServer {
             let client = new Client({service: service})
             client.healthCheck()
             .then(record => {
-              f(Success.of(record, service))
+              f(Success.of({record, service}))
             })
             .catch(error => f(Failure.of({error, service})))
           })

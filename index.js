@@ -89,7 +89,24 @@ calcService.start({port: port}, res => {
             calcService.createRegistration(registration => {
               registration.when({
                 Failure: (err) => console.log("🙀", err),
-                Success: record => console.log("😻 registration is ok:", record)
+                Success: record => { 
+                  console.log("😻 registration is ok:", record) 
+                  
+                  // heartbeat
+                  function updateStatusOfService(service) {
+                    return function() {
+                      service.updateRegistration(registration => {
+                        registration.when({
+                          Failure: error => console.log("😡 update registration is ko", error),
+                          Success: value => console.log("😍 registration updated", value)
+                        })
+                      })
+                    }
+                  } // end function updateStatusOfService()
+                  setInterval(updateStatusOfService(calcService), 5000);                  
+                  
+                
+                } // end of Success
               }) // end of when
             }) // end of create registration
           } // end of success
