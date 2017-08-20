@@ -37,7 +37,11 @@ let record = {
   metadata: {
     kind: "http"
   },
-  instance: { id: process.env.INSTANCE_ID, type: process.env.INSTANCE_TYPE, number: process.env.INSTANCE_NUMBER }
+  instance: { 
+    id: process.env.INSTANCE_ID, 
+    type: process.env.INSTANCE_TYPE, 
+    number: process.env.INSTANCE_NUMBER 
+  }
 }
 
 let calcService = new Service({discoveryBackend: discoveryBackend, record: record})
